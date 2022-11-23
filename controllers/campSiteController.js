@@ -15,6 +15,7 @@ exports.createCampSite = catchAsyncError(async (req, res, next)=>{
     res.status(201).json({
         success : true,
         newCampSite,
+
     })
 })
 
@@ -25,10 +26,14 @@ exports.getAllCampsSites = catchAsyncError(async (req, res, next)=>{
 
     const allCampSites = await CampSite.find();
 
+    
+    const campSiteCount = await CampSite.countDocuments();
+
     res.setHeader('Content-type', 'application/json');
     res.status(200).json({
         success : true,
         allCampSites,
+        campSiteCount
     })
 })
 
@@ -78,12 +83,13 @@ exports.deleteCampSite = catchAsyncError(async (req, res, next)=>{
         return next(new ErrorHandler('Camp Site Not Found', 404))
     }
 
+    // const name = await CampSite.find({},{})
     await campSite.remove()
 
     res.setHeader('Content-type', 'application/json');
     res.status(200).json({
         success : true,
-        massage : "Camp Site deleted Successfully"
+        massage : `Camp Site deleted Successfully : Name = ${campSite.camp_name}, Id : ${campSite._id}` ,
     })
 } 
 )
