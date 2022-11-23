@@ -9,6 +9,9 @@ const catchAsyncError = require('../middleware/catchAsyncError')
 //(creating Schema requires promise)
 exports.createCampSite = catchAsyncError(async (req, res, next)=>{
 
+    //sending id of user who is creating camsite
+    req.body.user = req.user.id
+
     const newCampSite = await CampSite.create(req.body);
 
     res.setHeader('Content-type', 'application/json');
