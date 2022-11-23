@@ -4,8 +4,9 @@ const dotenv = require("dotenv");
 //data base connection import
 const connectDataBase = require("./config/database")
 
-//Handling uncaught Exception
 
+
+//Handling uncaught Exception
 process.on("uncaughtException", err=>{
     console.log(`Error : ${err.message}`);
 
@@ -14,8 +15,6 @@ process.on("uncaughtException", err=>{
         process.exit();
     })
 })
-
-
 
 
 //Connected to config
