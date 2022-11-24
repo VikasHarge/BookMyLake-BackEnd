@@ -9,7 +9,7 @@ app.use(express.json());
 //Add Cockie parser
 app.use(cookieParser())
 
-
+ 
 
 //Import MiddleWare
 const errorMiddleware = require('./middleware/error')
@@ -23,7 +23,7 @@ const userRouter = require("./routes/userRoute")
 
 //Redirect to functions
 app.use('/campApi/v1/campSites', campSiteRouter);
-app.use('/campApi/v1/', userRouter)
+app.use('/userApi/v1/', userRouter)
 
 
 

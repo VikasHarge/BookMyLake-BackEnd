@@ -2,7 +2,7 @@ const ErrorHandler = require("../utils/errorhandler");
 
 module.exports = (err, req, res, next)=>{
     
-    err.message = err.message || "Camp Site Not Found"
+    err.message = err.message || "Enternal Error"
     err.statusCode = err.statusCode || 500;
 
     // Cast Error Handle

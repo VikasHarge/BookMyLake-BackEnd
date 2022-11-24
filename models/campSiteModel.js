@@ -47,11 +47,16 @@
         required : [true, "Please set camp Status"], 
         default : "active",  
     },
-    review : [
+    reviews : [
         {
+            user : {
+                type : mongoose.Schema.ObjectId,
+                ref : "User",
+                required : true
+            },
             name : {
                 type : String,
-                required : true,
+                required : true, 
             },
             rating : {
                 type : Number,
@@ -63,10 +68,9 @@
             }   
         }
     ],
-    user : {
-        type : mongoose.Schema.ObjectId,
-        ref : "User",
-        required : true
+    numOfReviews : {
+        type : Number,
+        default : 0,
     },
     createdAt : {
         type : Date,
