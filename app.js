@@ -19,11 +19,15 @@ const errorMiddleware = require('./middleware/error')
 //import router
 const campSiteRouter = require("./routes/campSiteRoute")
 const userRouter = require("./routes/userRoute")
+const bookingRouter = require("./routes/bookingRoute")
+
 
 
 //Redirect to functions
 app.use('/campApi/v1/campSites', campSiteRouter);
 app.use('/userApi/v1/', userRouter)
+app.use('/bookingApi/v1/', bookingRouter)
+
 
 
 

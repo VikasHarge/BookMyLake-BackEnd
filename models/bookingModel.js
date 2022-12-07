@@ -24,12 +24,13 @@
     },
     bookOn : {
         type : Date,
-        default : Date.now,
+        default : Date.now(),
         required : true,
     },
     bookingDate : {
         type : Date,
         required : true,
+        default : Date.now() + 20*60*60*60*1000
     },
     packagePrice : {
         type : Number,
@@ -44,6 +45,7 @@
         status : {
             type : String,
             required : true,
+            default : "processing"
         }
     },
     bookingStatus : {
@@ -52,7 +54,6 @@
         default : "Processing"
     },
     completedOn : Date,
-     
  })
 
- module.exports = mongoose.model("booking", bookingModel); 
+ module.exports = mongoose.model("Booking", bookingModel);
