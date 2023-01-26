@@ -1,6 +1,8 @@
 const ErrorHandler = require("../utils/errorhandler");
 
 module.exports = (err, req, res, next)=>{
+
+    console.log(err.message);
     
     err.message = err.message || "Enternal Error"
     err.statusCode = err.statusCode || 500;

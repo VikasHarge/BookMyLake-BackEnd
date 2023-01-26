@@ -3,13 +3,30 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const cloudinary = require('cloudinary')
+
+
 
 //User Schema
 const User = require("../models/userModel");
 
 //User Registration
 exports.registerUser = catchAsyncError(async (req, res, next) => {
+
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar,
+    {
+      folder : "avatars",
+      width : 150,
+      crop : "scale",
+    })
+
   const { name, email, password, phone } = req.body;
+
+  const user = await User.findOne({ email: email })
+
+  if(user){
+    return next(new ErrorHandler("Email Id already registered", 400))
+  }
 
   const newUser = await User.create({
     name,
@@ -17,8 +34,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     password,
     phone,
     avatar: {
-      public_id: "sample_id_1",
-      url: "samplephoto/1.jpg",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
@@ -29,9 +46,10 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
+
   //Checking if pass and email entered
   if (!password || !email) {
-    return next(new ErrorHandler("Please Enter Email or Password", 400));
+    return next(new ErrorHandler('Please Enter Email or Password', 401));
   }
 
   //Search for user in dataBase
@@ -44,8 +62,6 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   }
 
   const isPassMatched = await user.comparePassword(password);
-
-  console.log(isPassMatched);
 
   if (!isPassMatched) {
     return next(
@@ -63,6 +79,8 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
 
 //Logout Funtion
 exports.logoutUser = catchAsyncError(async (req, res, next) => {
+
+
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
@@ -97,7 +115,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
         Link : ${resetPasswordUrl}, \n\n
         if not reqested by you then please ignore`;
 
-  try {
+  try {z
     //Send Link via Email
     await sendEmail({
       email: user.email,
@@ -122,7 +140,6 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 // Reset password
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
 
-  console.log(("reset pass function is call"));
   //Creating Token Hash
   const resetPasswordToken = crypto
     .createHash("sha256")

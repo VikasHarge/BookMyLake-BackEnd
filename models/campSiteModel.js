@@ -11,6 +11,7 @@
         type : String,
         required : [true, "please Enter CampSite Description"],
     },
+
     max_price : {
         type : Number,
         required : [true, "please Enter CampSite Max Price"],
@@ -41,6 +42,16 @@
                 required : true,
             },
         },
+    ],
+    utilities : [
+        {
+            icon : {
+                type : String,
+            },
+            para : {
+                type : String
+            }
+        }
     ],
     status : {
         type : String,
