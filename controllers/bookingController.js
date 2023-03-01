@@ -3,10 +3,11 @@ const Booking = require("../models/bookingModel");
 const CampSite = require("../models/campSiteModel");
 const User = require("../models/userModel");
 const ErrorHandler = require("../utils/errorhandler");
-const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const catchAsyncError = require('../middleware/catchAsyncError.js')
+
 
 
 

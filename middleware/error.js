@@ -1,10 +1,9 @@
-const ErrorHandler = require("../utils/errorhandler");
 
-module.exports = (err, req, res, next)=>{
+const ErrorMiddleware = (err, req, res, next)=>{
 
     console.log(err.message);
     
-    err.message = err.message || "Enternal Error"
+    err.message = err.message || "Enternal Server Error"
     err.statusCode = err.statusCode || 500;
 
     // Cast Error Handle
@@ -16,7 +15,9 @@ module.exports = (err, req, res, next)=>{
 
     res.status(err.statusCode).json({
         success : false,
-        error : err
+        message : err.message
     })
 
 }
+
+module.exports =   ErrorMiddleware;

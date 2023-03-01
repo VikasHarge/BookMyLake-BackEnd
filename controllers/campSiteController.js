@@ -1,7 +1,7 @@
 //Import Schema
 const CampSite = require("../models/campSiteModel");
 const ErrorHandler = require("../utils/errorhandler");
-const catchAsyncError = require("../middleware/catchAsyncError");
+const catchAsyncError = require('../middleware/catchAsyncError.js')
 
 // Crate CampSite (admin)
 //(creating Schema requires promise)

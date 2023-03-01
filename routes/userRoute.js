@@ -49,7 +49,6 @@ router.route("/logout").get(logoutUser);
 
 //Get current user Details
 router.route("/me").get(isAuthenticatedUser, getUserDetails);
-;
 
 
 //For Admin

@@ -1,5 +1,5 @@
+const catchAsyncError = require('../middleware/catchAsyncError.js')
 const ErrorHandler = require("../utils/errorhandler");
-const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
@@ -38,14 +38,12 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       url: myCloud.secure_url,
     },
   });
-
   sendToken(newUser, 201, res);
 });
 
 // Login user Controller
 exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
-
 
   //Checking if pass and email entered
   if (!password || !email) {
@@ -75,22 +73,29 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   await user.save()
 
   sendToken(user, 200, res);
+
 });
+
 
 //Logout Funtion
 exports.logoutUser = catchAsyncError(async (req, res, next) => {
 
+  console.log("res cookie", res.cookie);
 
-  res.cookie("token", null, {
+  const options = {
     expires: new Date(Date.now()),
     httpOnly: true,
-  });
-
+    withCredentials: true,
+  }
+  res.cookie('pawnaToken', null, options);
   res.status(200).json({
     success: true,
     message: "Logged Out Successfully",
   });
 });
+
+
+
 
 //Forgot Password
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
@@ -115,7 +120,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
         Link : ${resetPasswordUrl}, \n\n
         if not reqested by you then please ignore`;
 
-  try {z
+  try {
     //Send Link via Email
     await sendEmail({
       email: user.email,
@@ -211,11 +216,31 @@ exports.updatePassword = catchAsyncError( async (req, res, next)=>{
 //Update User Details
 exports.updateUserDetails = catchAsyncError( async (req, res, next)=>{
 
-  const newUser = {
-    name : req.body.name,
-    email : req.body.email,
-    phone : req.body.phone,
-    //add avatar from cloudinary
+  let newUser;
+
+  if(req.body.avatar){
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar,
+      {
+        folder : 'avatars',
+        width : 150,
+        crop : 'scale',
+      });
+  
+    newUser = {
+      name : req.body.name,
+      email : req.body.email,
+      phone : req.body.phone,
+      avatar : {
+        public_id : myCloud.public_id,
+        url : myCloud.secure_url,
+      }
+    }
+  } else {  
+    newUser = {
+      name : req.body.name,
+      email : req.body.email,
+      phone : req.body.phone,
+    }
   }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUser, {

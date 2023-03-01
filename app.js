@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
+const ErrorMiddleware = require('./middleware/error') ;
 
 //express Module
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 //CORS
-app.use(cors())
+app.use(cors({origin: true, credentials: true}))
 
 //body parser
 app.use(bodyParser.urlencoded({extended : true}));
@@ -20,8 +21,6 @@ app.use(bodyParser.urlencoded({extended : true}));
 //File Upload
 app.use(fileUpload());
 
-//Import MiddleWare
-const errorMiddleware = require('./middleware/error')
 
 //import router
 const campSiteRouter = require("./routes/campSiteRoute")
@@ -33,7 +32,11 @@ app.use('/campApi/v1/campSites', campSiteRouter);
 app.use('/userApi/v1/', userRouter)
 app.use('/bookingApi/v1/', bookingRouter)
 
-// Middleware to handle Error
-app.use(errorMiddleware);
+
 
 module.exports = app;
+
+
+
+// Middleware to handle Error
+app.use(ErrorMiddleware);

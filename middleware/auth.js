@@ -6,13 +6,13 @@ const User = require("../models/userModel");
 
 exports.isAuthenticatedUser = catchAsyncError( async(req, res, next)=>{
 
-    const { token } = req.cookies;
+    const { pawnaToken } = req.cookies;
 
-    if(!token){
+    if(!pawnaToken){
         return next(new ErrorHandler("Please Login to access this resourse", 401));
     }
 
-    const decoadedData = jwt.verify(token, process.env.JWT_SECRET);
+    const decoadedData = jwt.verify(pawnaToken, process.env.JWT_SECRET);
 
     //saving user in req.user to use further
     req.user = await User.findById(decoadedData.id)

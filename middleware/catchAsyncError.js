@@ -1,5 +1,5 @@
-module.exports = asyncErrFunc =>(req, res, next)=>{
+module.exports = (passFun)=> (req, res, next)=>{
 
-    Promise.resolve(asyncErrFunc(req, res, next)).catch(next);
+    Promise.resolve(passFun(req, res, next)).catch(next);
 
 }

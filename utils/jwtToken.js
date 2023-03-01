@@ -11,16 +11,17 @@ const sendToken = (user, statusCode, res)=>{
         ),
         httpOnly : true,
         withCredentials: true,
-        // secure: true,
+        secure: true,
         // sameSite: 'lax'
     }
 
     // Sending cookie
-    res.status(statusCode).cookie("token",token,options).json({
+    res.status(statusCode).cookie("pawnaToken",token,options).json({
         success : true,
         user,
         token,
     })
+
 }
 
 
