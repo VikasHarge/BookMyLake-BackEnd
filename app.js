@@ -9,14 +9,15 @@ const ErrorMiddleware = require('./middleware/error') ;
 const app = express();
 app.use(express.json());
 
-//Add Cockie parser
-app.use(cookieParser())
-
-//CORS
-app.use(cors({origin: true, credentials: true}))
-
 //body parser
 app.use(bodyParser.urlencoded({extended : true}));
+
+
+//CORS
+app.use(cors({origin: true, credentials: true,  optionsSuccessStatus: 200}))
+
+//Add Cockie parser
+app.use(cookieParser())
 
 //File Upload
 app.use(fileUpload());
